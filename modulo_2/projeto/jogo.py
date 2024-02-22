@@ -1,3 +1,5 @@
+import random
+
 # Personagem: classe mãe
 # Herói: controlado pelo usuário
 # Inimigo: adversário do usuário
@@ -26,7 +28,7 @@ class Personagem:
       self.__vida = 0
   
   def atacar(self, alvo):
-    dano = self.__nivel * 2
+    dano = random.randint(self.get_nivel() * 2, self.get_nivel() * 4) # Dano que varia entre x2 e x4 o nível
     alvo.receber_ataque(dano)
     print(f"{self.get_nome()} atacou {alvo.get_nome()}, causando {dano} de dano!")
 
@@ -42,7 +44,7 @@ class Heroi(Personagem):
     return f"{super().exibir_detalhes()}\nHabilidade: {self.get_habilidade()}\n"
   
   def ataque_especial(self, alvo):
-    dano = self.get_nivel() * 5 # Dano aumentado
+    dano = random.randint(self.get_nivel() * 5, self.get_nivel() * 8)
     alvo.receber_ataque(dano)
     print(f"{self.get_nome()} usou a habilidade especial {self.get_habilidade()} em {alvo.get_nome()} e causou {dano} de dano!")
   
@@ -82,7 +84,8 @@ class Jogo:
       else:
         print("Escolha inválida. Escolha novamente.")
       
-      if self.inimigo.get_vida() > 0:
+      # Prof não notou: Quando escolha é inválida, o Inimigo ainda estava atacando, por isso acrescentei um and na condicional
+      if self.inimigo.get_vida() > 0 and (escolha == '1' or escolha == '2'):
         # Inimigo ataca o heroi
         self.inimigo.atacar(self.heroi)
 
